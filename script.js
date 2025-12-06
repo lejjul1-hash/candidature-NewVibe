@@ -1,108 +1,96 @@
-// ID DU RÔLE À PING
-const ROLE_ID = "1446471808743243987";
+// ==========================================================
+//  CONFIG
+// ==========================================================
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1447005556635209899/tb29lQPMnF47DCR1w2BqQzXujui3qYhEVsY45GhJ9726gvlNfhTQ5cWSuwMXNZGHjgCy";
+const ROLE_ID = "1446471808743243987"; // rôle staff à ping
 
-// Webhook
-const WEBHOOK = "https://discord.com/api/webhooks/1447005556635209899/tb29lQPMnF47DCR1w2BqQzXujui3qYhEVsY45GhJ9726gvlNfhTQ5cWSuwMXNZGHjgCy";
+// ==========================================================
+//  ANTI-SPAM 24H
+// ==========================================================
+function canSend() {
+    const last = localStorage.getItem("lastSendTime");
+    if (!last) return true;
 
-// ==========================
-// ⏳ ANTI-SPAM 24H
-// ==========================
-function canSendApplication() {
-    const last = localStorage.getItem("lastSend");
-    if (!last) return true; // jamais envoyé → OK
-
-    const diff = Date.now() - Number(last);
-    const hours = 24 * 60 * 60 * 1000;
-
-    return diff >= hours; // true = OK, false = trop tôt
+    const elapsed = Date.now() - Number(last);
+    return elapsed >= 24 * 60 * 60 * 1000;
 }
 
-function getRemainingTime() {
-    const last = Number(localStorage.getItem("lastSend"));
+function timeLeft() {
+    const last = Number(localStorage.getItem("lastSendTime"));
     const remaining = (24 * 60 * 60 * 1000) - (Date.now() - last);
 
-    const h = Math.floor(remaining / (1000*60*60));
-    const m = Math.floor((remaining % (1000*60*60)) / (1000*60));
+    const hours = Math.floor(remaining / 3600000);
+    const minutes = Math.floor((remaining % 3600000) / 60000);
 
-    return `${h}h ${m}min`;
+    return `${hours}h ${minutes}min`;
 }
 
-// ==========================
-// PAGE 1 → PAGE 2
-// ==========================
-document.getElementById("nextBtn").addEventListener("click", () => {
+// ==========================================================
+//  PAGE SWITCH (Suivant / Retour)
+// ==========================================================
+document.getElementById("nextBtn").onclick = () => {
 
-    if (!canSendApplication()) {
-        alert("❗ Vous devez attendre encore : " + getRemainingTime());
-        return;
-    }
-
-    if (
-        pseudo.value.trim() === "" ||
-        age.value.trim() === ""
-    ) {
-        alert("Veuillez remplir au minimum PSEUDO + ÂGE.");
+    if (!canSend()) {
+        alert("❗ Vous devez attendre encore " + timeLeft());
         return;
     }
 
     page1.style.display = "none";
     page2.style.display = "block";
-});
+};
 
-// ==========================
-// RETOUR
-// ==========================
-backBtn.addEventListener("click", () => {
-    page1.style.display = "block";
+document.getElementById("backBtn").onclick = () => {
     page2.style.display = "none";
-});
+    page1.style.display = "block";
+};
 
-// ==========================
-// 📤 ENVOI AU WEBHOOK
-// ==========================
-sendBtn.addEventListener("click", () => {
+// ==========================================================
+//  ENVOI AU WEBHOOK
+// ==========================================================
+document.getElementById("sendBtn").onclick = () => {
 
-    if (!canSendApplication()) {
-        alert("❗ Vous devez attendre encore : " + getRemainingTime());
+    if (!canSend()) {
+        alert("⛔ Vous devez attendre encore " + timeLeft());
         return;
     }
 
+    // Récupération valeurs
     const poste = document.querySelector("input[name='poste']:checked");
 
-    const data = {
-        pseudo: pseudo.value,
-        prenom: prenom.value,
-        age: age.value,
-        dispo: dispo.value,
-        poste: poste ? poste.value : "Non choisi",
-        motive: motive.value,
-        pourquoi: pourquoi.value,
-        qualites: qualites.value,
-        definition: definition.value,
-        experience: experience.value,
-        autre: autre.value
-    };
-
-    const embed = {
-        content: `<@&${ROLE_ID}>`, // PING DU RÔLE 🔥
+    const payload = {
+        content: `<@&${ROLE_ID}>`,  // ⭐ PING DU RÔLE FONCTIONNEL ICI ⭐
         embeds: [{
-            title: "📩 Nouvelle Candidature Staff",
+            title: "📨 Nouvelle Candidature Staff",
             color: 0xff0000,
-            fields: Object.keys(data).map(k => ({
-                name: k.charAt(0).toUpperCase() + k.slice(1),
-                value: data[k] || "Non rempli"
-            }))
+            fields: [
+                { name: "Pseudo Discord", value: pseudo.value || "Non renseigné" },
+                { name: "Prénom", value: prenom.value || "Non renseigné" },
+                { name: "Âge", value: age.value || "Non renseigné" },
+                { name: "Disponibilités", value: dispo.value || "Non renseigné" },
+                { name: "Poste souhaité", value: poste ? poste.value : "Non choisi" },
+                { name: "Motivations", value: motive.value || "Non renseigné" },
+                { name: "Pourquoi vous ?", value: pourquoi.value || "Non renseigné" },
+                { name: "Qualités", value: qualites.value || "Non renseigné" },
+                { name: "Définition du rôle", value: definition.value || "Non renseigné" },
+                { name: "Expérience", value: experience.value || "Non renseigné" },
+                { name: "Autre", value: autre.value || "Aucun" }
+            ]
         }]
     };
 
-    fetch(WEBHOOK, {
+    // Envoi Webhook
+    fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(embed)
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+        // Sauvegarde ANTI-SPAM 24H
+        localStorage.setItem("lastSendTime", Date.now().toString());
+
+        alert("✅ Votre candidature a bien été envoyée !");
+    })
+    .catch(() => {
+        alert("❗ Erreur d'envoi !");
     });
-
-    // Sauvegarde anti-spam 24h
-    localStorage.setItem("lastSend", Date.now().toString());
-
-    alert("🎉 Votre candidature a été envoyée !");
-});
+};
