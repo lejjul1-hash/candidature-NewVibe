@@ -1,88 +1,107 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Candidature Staff — Glast</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>UltraBot — Candidature Staff</title>
+<link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
 
-<header class="header">
-    <h2>Système de Candidature Glast</h2>
-
-    <!-- 🔥 BOUTON ADMIN -->
-    <button id="adminBtn" class="admin-button">Admin</button>
-</header>
-
-<!-- 🔐 POPUP ADMIN -->
-<div id="adminPopup" class="admin-popup">
-    <div class="admin-box">
-        <h3>Accès Admin</h3>
-        <input id="adminCode" placeholder="Code admin">
-        <button id="adminLogin">Entrer</button>
-        <button id="adminClose">Fermer</button>
-    </div>
-</div>
-
-<!-- 📝 PAGE CANDIDATURE -->
-<div id="page1" class="page active">
-    <h3>Présentation IRL</h3>
-
-    <label>Pseudo Discord :</label>
-    <input id="pseudo">
-
-    <label>Prénom :</label>
-    <input id="prenom">
-
-    <label>Âge :</label>
-    <input id="age">
-
-    <label>Disponibilités :</label>
-    <input id="dispo">
-
-    <button id="nextBtn" class="btn">Suivant</button>
-</div>
-
-<!-- 📝 PAGE 2 -->
-<div id="page2" class="page">
-    <h3>Administration</h3>
-
-    <label>Poste souhaité :</label>
-    <div>
-        <label><input type="radio" name="poste" value="Staff"> 🔫 Staff</label><br>
-        <label><input type="radio" name="poste" value="Community Manager"> 🛡️ Community Manager</label>
+  <header class="header">
+    <div class="logo"><img src="ultra.png" alt="UltraBot" style="width:100%;height:100%;object-fit:cover"></div>
+    <div style="flex:1">
+      <div class="title">UltraBot</div>
+      <div class="small">Système de candidature — Glast</div>
     </div>
 
-    <label>Motivations :</label>
-    <textarea id="motive"></textarea>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button id="adminBtn" class="fx-neon-pulse btn-small">Admin</button>
+    </div>
+  </header>
 
-    <label>Pourquoi vous ? :</label>
-    <textarea id="pourquoi"></textarea>
+  <main class="container">
+    <div class="card">
+      <div class="title" style="font-size:20px;margin-bottom:8px">Bienvenue</div>
+      <p class="small">Bienvenue sur le système de candidature de Glast — réponds aux questions puis envoie ta candidature.</p>
+    </div>
 
-    <label>Qualités :</label>
-    <textarea id="qualites"></textarea>
+    <form id="appForm" class="card" autocomplete="off">
+      <!-- STEP 1 -->
+      <div class="step" data-step="1">
+        <h3>Présentation IRL</h3>
 
-    <label>Définition du rôle :</label>
-    <textarea id="definition"></textarea>
+        <label>Présentation IRL</label>
+        <textarea id="q_intro" placeholder="Dis-nous qui tu es..."></textarea>
 
-    <label>Expérience :</label>
-    <textarea id="experience"></textarea>
+        <label>Votre Pseudo Discord</label>
+        <input id="q_discord" placeholder="Pseudo#0000">
 
-    <label>Autre :</label>
-    <textarea id="autre"></textarea>
+        <label>Quel est votre prénom ?</label>
+        <input id="q_prenom">
 
-    <button id="backBtn" class="btn-secondary">Retour</button>
-    <button id="sendBtn" class="btn">Envoyer</button>
-</div>
+        <label>Quel est votre âge ?</label>
+        <input id="q_age" type="number" min="10">
 
-<!-- 📄 PAGE ADMIN -->
-<div id="adminPanel" class="admin-panel">
-    <h2>📂 Candidatures envoyées</h2>
-    <div id="adminList"></div>
-</div>
+        <label>Disponibilités</label>
+        <textarea id="q_dispo" placeholder="Ex: soirs en semaine, week-ends..."></textarea>
 
-<script src="script.js"></script>
+        <div class="btns">
+          <button type="button" class="btn-secondary" id="step1-prev" style="display:none">Retour</button>
+          <button type="button" class="btn" id="step1-next">Suivant →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step" data-step="2" style="display:none">
+        <h3>Administration</h3>
+
+        <label>Dans quelle catégorie du staff souhaitez-vous aller ?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="category" value="Staff (OPEN ✅)" checked> 🔫・Staff (OPEN ✅)</label>
+          <label><input type="radio" name="category" value="Community Manager (OPEN ✅)"> 🛡️・Community Manager (OPEN ✅)</label>
+        </div>
+
+        <label>Quelles sont vos motivations ?</label>
+        <textarea id="q_motiv"></textarea>
+
+        <label>Pourquoi toi et pas un autre ?</label>
+        <textarea id="q_pourquoi"></textarea>
+
+        <label>Qualités (Minimum 3)</label>
+        <input id="q_qualites" placeholder="Qualité1, Qualité2, Qualité3">
+
+        <label>Qu'est-ce qu'un Modérateur / Community Manager ?</label>
+        <textarea id="q_def"></textarea>
+
+        <label>Expérience (dans le domaine choisi)</label>
+        <textarea id="q_exp"></textarea>
+
+        <label>Avez-vous quelque chose à ajouter ?</label>
+        <textarea id="q_plus"></textarea>
+
+        <div class="btns">
+          <button type="button" class="btn-secondary" id="step2-back">← Retour</button>
+          <button type="button" class="btn" id="submitBtn">Envoyer la candidature</button>
+        </div>
+
+        <div id="statusMsg" class="small" style="margin-top:12px;color:#ffd;"></div>
+      </div>
+    </form>
+
+    <!-- ADMIN PANEL MODAL -->
+    <div id="adminModal" class="modal" aria-hidden="true">
+      <div class="modal-inner">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3>Admin — Candidatures</h3>
+          <button class="close-btn" id="closeAdmin">Fermer</button>
+        </div>
+        <div id="adminContent" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+  </main>
+
+<script src="app.js"></script>
 </body>
 </html>
