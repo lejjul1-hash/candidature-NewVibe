@@ -1,7 +1,7 @@
 const WEBHOOK = "https://discord.com/api/webhooks/1447005556635209899/tb29lQPMnF47DCR1w2BqQzXujui3qYhEVsY45GhJ9726gvlNfhTQ5cWSuwMXNZGHjgCy";
 const ROLE_ID = "1446471808743243987";
 const ADMIN_CODE = "Glastontop1234";
-const WHITELIST_IP = "91.174.237.40";
+const WHITELIST_IP = "";
 
 // PAGE SYSTEM
 function nextStep(){ step1.style.display="none"; step2.style.display="block"; }
@@ -143,3 +143,4 @@ function clearAll(){
     localStorage.removeItem("candidatures");
     adminPanel.innerHTML = "<p style='color:#ff4444;font-weight:700'>Toutes les candidatures ont été supprimées.</p>";
 }
+
