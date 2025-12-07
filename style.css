@@ -5,28 +5,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-header {
-    width: 100%;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    background: #0a0a0c;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.admin-btn {
-    background: #222;
-    border: 1px solid #444;
-    padding: 8px 14px;
-    border-radius: 8px;
-    color: #eee;
-    cursor: pointer;
-}
-
-.admin-btn:hover {
-    background: #333;
-}
-
 .container {
     max-width: 750px;
     margin: 40px auto;
@@ -51,56 +29,140 @@ header {
 }
 
 label {
-    font-weight: 600;
-    margin-top: 12px;
     display: block;
+    margin-top: 12px;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
 input, textarea, select {
     width: 100%;
     padding: 12px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: white;
     border-radius: 10px;
-    margin-bottom: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    color: white;
+    resize: none;
     outline: none;
 }
 
 textarea {
-    height: 80px;
+    height: 85px;
 }
 
-.btn {
+.btn-next,
+.btn-back,
+.btn-send {
     width: 100%;
     padding: 14px;
     margin-top: 18px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(90deg,#ff1e1e,#ff6b6b);
-    color: white;
-    font-weight: 700;
+    font-size: 17px;
     cursor: pointer;
+    font-weight: 700;
+}
+
+.btn-next {
+    background: linear-gradient(90deg, #ff1e1e, #ff6b6b);
+    color: white;
     box-shadow: 0 0 15px rgba(255,0,0,0.4);
 }
 
-.btn:hover {
+.btn-next:hover {
     box-shadow: 0 0 25px rgba(255,0,0,0.8);
 }
 
-.btn-secondary {
+.btn-back {
     background: #222;
     color: #aaa;
 }
 
-.btns {
+.btn-send {
+    background: linear-gradient(90deg, #ff1e1e, #ff6b6b);
+    color: white;
+    box-shadow: 0 0 15px rgba(255,0,0,0.4);
+}
+
+.btn-send:hover {
+    box-shadow: 0 0 25px rgba(255,0,0,0.8);
+}
+
+.btn-row {
     display: flex;
     gap: 12px;
 }
 
-.admin-panel {
-    margin-top: 40px;
+.status {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 700;
+    color: #ff4f4f;
+}
+
+.radio-group input {
+    margin-right: 6px;
+}
+
+/* HEADER */
+header {
+    width: 100%;
     padding: 20px;
-    background: #111;
-    border-radius: 12px;
+    background: #0c0c0f;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+}
+
+.header-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #ff4040;
+    text-shadow: 0 0 10px red;
+}
+
+/* 🔥 BOUTON ADMIN EN HAUT */
+.admin-btn-top {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    background:#1c1e23;
+    padding:10px 18px;
+    border-radius:8px;
+    color:#ff4040;
+    font-weight:800;
+    border:1px solid rgba(255,255,255,0.1);
+    cursor:pointer;
+}
+.admin-btn-top:hover {
+    background:#2b2e33;
+}
+
+/* PANEL ADMIN */
+#adminPanel {
+    margin-top: 30px;
+    padding-bottom: 60px;
+}
+
+.admin-entry {
+    background:#0e0e10;
+    padding:12px;
+    margin-bottom:12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.05);
+}
+
+.admin-btn {
+    width:100%;
+    padding:12px;
+    background:#ff1e1e;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow:0 0 12px rgba(255,0,0,0.4);
+}
+
+.admin-btn:hover {
+    box-shadow:0 0 22px rgba(255,0,0,0.8);
 }
