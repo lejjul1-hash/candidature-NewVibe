@@ -74,7 +74,7 @@ async function sendForm() {
                 },
 
                 { 
-                    name:"🛡 Définition du rôle", 
+                    name:"🛡 Définition du rôle moderateur/cm", 
                     value:data.definition || "Non renseigné"
                 },
 
@@ -146,6 +146,7 @@ function clearAll(){
     localStorage.removeItem("candidatures");
     adminPanel.innerHTML = "<p style='color:#ff4444;font-weight:700'>Toutes les candidatures ont été supprimées.</p>";
 }
+
 
 
 
